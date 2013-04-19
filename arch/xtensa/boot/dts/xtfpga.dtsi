@@ -65,5 +65,16 @@
 			local-mac-address = [00 50 c2 13 6f 00];
 			clocks = <&osc>;
 		};
+
+		i2c0: i2c-ocores@0d090000 {
+			compatible = "opencores,i2c-ocores";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x0d090000 0x20>;
+			reg-shift = <2>;
+			reg-io-width = <1>;
+			interrupts = <4 1>;
+			clock-frequency = <0>;
+		};
 	};
 };
