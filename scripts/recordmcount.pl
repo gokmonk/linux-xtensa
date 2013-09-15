@@ -135,7 +135,7 @@ my %text_sections = (
      ".spinlock.text" => 1,
      ".irqentry.text" => 1,
      ".kprobes.text" => 1,
-     ".text.unlikely" => 1,
+#     ".text.unlikely" => 1,
 );
 
 # Note: we are nice to C-programmers here, thus we skip the '||='-idiom.
@@ -367,6 +367,8 @@ if ($arch eq "x86_64") {
     $mcount_regex = "^\\s*([0-9a-fA-F]+):.*\\s__mcount\$";
     $type = ".quad";
     $alignment = 8;
+} elsif ($arch eq "xtensa") {
+    $mcount_regex = "^\\s*([0-9a-fA-F]+): R_XTENSA_ASM_EXPAND\\s+_mcount\$";
 } else {
     die "Arch $arch is not supported with CONFIG_FTRACE_MCOUNT_RECORD";
 }
