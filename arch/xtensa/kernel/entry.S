@@ -446,10 +446,7 @@ common_exception_return:
 	_bbsi.l	a4, TIF_NOTIFY_RESUME, 2f
 	_bbci.l	a4, TIF_SIGPENDING, 5f
 
-2:	l32i	a4, a1, PT_DEPC
-	bgeui	a4, VALID_DOUBLE_EXCEPTION_ADDRESS, 4f
-
-	/* Call do_signal() */
+2:	/* Call do_notify_resume() */
 
 	rsil	a2, 0
 	movi	a4, do_notify_resume	# int do_notify_resume(struct pt_regs*)

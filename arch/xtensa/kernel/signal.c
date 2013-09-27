@@ -247,9 +247,6 @@ asmlinkage long xtensa_rt_sigreturn(long a0, long a1, long a2, long a3,
 	/* Always make any pending restarted system calls return -EINTR */
 	current_thread_info()->restart_block.fn = do_no_restart_syscall;
 
-	if (regs->depc > 64)
-		panic("rt_sigreturn in double exception!\n");
-
 	frame = (struct rt_sigframe __user *) regs->areg[1];
 
 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
@@ -346,9 +343,6 @@ static int setup_frame(struct ksignal *ksig, sigset_t *set,
 	}
 
 	frame = (void *)((sp - sizeof(*frame)) & -16ul);
-
-	if (regs->depc > 64)
-		panic ("Double exception sys_sigreturn\n");
 
 	if (!access_ok(VERIFY_WRITE, frame, sizeof(*frame))) {
 		return -EFAULT;
