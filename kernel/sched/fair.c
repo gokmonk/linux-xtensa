@@ -427,7 +427,7 @@ find_matching_se(struct sched_entity **se, struct sched_entity **pse)
 
 #endif	/* CONFIG_FAIR_GROUP_SCHED */
 
-static __always_inline
+static
 void account_cfs_rq_runtime(struct cfs_rq *cfs_rq, u64 delta_exec);
 
 /**************************************************************
@@ -2122,7 +2122,7 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
 		account_entity_enqueue(cfs_rq, se);
 }
 
-static inline int throttled_hierarchy(struct cfs_rq *cfs_rq);
+static int throttled_hierarchy(struct cfs_rq *cfs_rq);
 
 static void update_cfs_shares(struct cfs_rq *cfs_rq)
 {
@@ -2640,7 +2640,7 @@ static inline void enqueue_entity_load_avg(struct cfs_rq *cfs_rq,
 static inline void dequeue_entity_load_avg(struct cfs_rq *cfs_rq,
 					   struct sched_entity *se,
 					   int sleep) {}
-static inline void update_cfs_rq_blocked_load(struct cfs_rq *cfs_rq,
+static void update_cfs_rq_blocked_load(struct cfs_rq *cfs_rq,
 					      int force_update) {}
 
 static inline int idle_balance(struct rq *rq)
@@ -2839,7 +2839,7 @@ static void clear_buddies(struct cfs_rq *cfs_rq, struct sched_entity *se)
 		__clear_buddies_skip(se);
 }
 
-static __always_inline void return_cfs_rq_runtime(struct cfs_rq *cfs_rq);
+static void return_cfs_rq_runtime(struct cfs_rq *cfs_rq);
 
 static void
 dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
@@ -3272,7 +3272,7 @@ static inline int cfs_rq_throttled(struct cfs_rq *cfs_rq)
 }
 
 /* check whether cfs_rq, or any parent, is throttled */
-static inline int throttled_hierarchy(struct cfs_rq *cfs_rq)
+static int throttled_hierarchy(struct cfs_rq *cfs_rq)
 {
 	return cfs_bandwidth_used() && cfs_rq->throttle_count;
 }
@@ -3809,7 +3809,7 @@ static inline int cfs_rq_throttled(struct cfs_rq *cfs_rq)
 	return 0;
 }
 
-static inline int throttled_hierarchy(struct cfs_rq *cfs_rq)
+static int throttled_hierarchy(struct cfs_rq *cfs_rq)
 {
 	return 0;
 }
