@@ -20,6 +20,7 @@
 #include <linux/futex.h>
 #include <linux/uaccess.h>
 #include <linux/errno.h>
+#include <linux/stringify.h>
 
 #define __futex_atomic_op(insn, ret, oldval, uaddr, oparg) \
 	__asm__ __volatile(				\
@@ -34,14 +35,14 @@
 	"	.align 4\n"				\
 	"4:	.long	3b\n"				\
 	"5:	l32r	%0, 4b\n"			\
-	"	movi	%1, %3\n"			\
+	"	movi	%1, "__stringify(-EFAULT)"\n"	\
 	"	jx	%0\n"				\
 	"	.previous\n"				\
 	"	.section __ex_table,\"a\"\n"		\
 	"	.long 1b,5b,2b,5b\n"			\
 	"	.previous\n"				\
 	: "=&r" (oldval), "=&r" (ret)			\
-	: "r" (uaddr), "I" (-EFAULT), "r" (oparg)	\
+	: "r" (uaddr), "r" (oparg)			\
 	: "memory")
 
 static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
@@ -65,22 +66,22 @@ static inline int futex_atomic_op_inuser(int encoded_op, u32 __user *uaddr)
 
 	switch (op) {
 	case FUTEX_OP_SET:
-		__futex_atomic_op("mov %1, %4", ret, oldval, uaddr, oparg);
+		__futex_atomic_op("mov %1, %3", ret, oldval, uaddr, oparg);
 		break;
 	case FUTEX_OP_ADD:
-		__futex_atomic_op("add %1, %0, %4", ret, oldval, uaddr,
+		__futex_atomic_op("add %1, %0, %3", ret, oldval, uaddr,
 				oparg);
 		break;
 	case FUTEX_OP_OR:
-		__futex_atomic_op("or %1, %0, %4", ret, oldval, uaddr,
+		__futex_atomic_op("or %1, %0, %3", ret, oldval, uaddr,
 				oparg);
 		break;
 	case FUTEX_OP_ANDN:
-		__futex_atomic_op("and %1, %0, %4", ret, oldval, uaddr,
+		__futex_atomic_op("and %1, %0, %3", ret, oldval, uaddr,
 				~oparg);
 		break;
 	case FUTEX_OP_XOR:
-		__futex_atomic_op("xor %1, %0, %4", ret, oldval, uaddr,
+		__futex_atomic_op("xor %1, %0, %3", ret, oldval, uaddr,
 				oparg);
 		break;
 	default:
@@ -120,23 +121,23 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
 
 	__asm__ __volatile__ (
 	"	# futex_atomic_cmpxchg_inatomic\n"
-	"1:	l32i	%1, %3, 0\n"
-	"	mov	%0, %5\n"
+	"1:	l32i	%1, %2, 0\n"
+	"	mov	%0, %4\n"
 	"	wsr	%1, scompare1\n"
-	"2:	s32c1i	%0, %3, 0\n"
+	"2:	s32c1i	%0, %2, 0\n"
 	"3:\n"
 	"	.section .fixup,\"ax\"\n"
 	"	.align 4\n"
 	"4:	.long	3b\n"
 	"5:	l32r	%1, 4b\n"
-	"	movi	%0, %6\n"
+	"	movi	%0, "__stringify(-EFAULT)"\n"
 	"	jx	%1\n"
 	"	.previous\n"
 	"	.section __ex_table,\"a\"\n"
 	"	.long 1b,5b,2b,5b\n"
 	"	.previous\n"
-	: "+r" (ret), "=&r" (prev), "+m" (*uaddr)
-	: "r" (uaddr), "r" (oldval), "r" (newval), "I" (-EFAULT)
+	: "+r" (ret), "=&r" (prev)
+	: "r" (uaddr), "r" (oldval), "r" (newval)
 	: "memory");
 
 	*uval = prev;
