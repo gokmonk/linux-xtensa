@@ -51,6 +51,7 @@ struct thread_info {
 	__s32			preempt_count;	/* 0 => preemptable,< 0 => BUG*/
 
 	mm_segment_t		addr_limit;	/* thread address space */
+	void			*double_frame;	/* double exception frame */
 	struct restart_block    restart_block;
 
 	unsigned long		cpenable;
@@ -72,7 +73,8 @@ struct thread_info {
 #define TI_CPU		 0x00000010
 #define TI_PRE_COUNT	 0x00000014
 #define TI_ADDR_LIMIT	 0x00000018
-#define TI_RESTART_BLOCK 0x000001C
+#define TI_DOUBLE_FRAME	 0x0000001C
+#define TI_RESTART_BLOCK 0x00000020
 
 #endif
 
@@ -90,6 +92,7 @@ struct thread_info {
 	.cpu		= 0,			\
 	.preempt_count	= INIT_PREEMPT_COUNT,	\
 	.addr_limit	= KERNEL_DS,		\
+	.double_frame	= 0,			\
 	.restart_block = {			\
 		.fn = do_no_restart_syscall,	\
 	},					\

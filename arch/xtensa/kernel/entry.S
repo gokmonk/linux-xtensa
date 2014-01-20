@@ -323,6 +323,12 @@ _kernel_exception:
 
 common_exception:
 
+	l32i	a2, a1, PT_DEPC
+	bltui	a2, VALID_DOUBLE_EXCEPTION_ADDRESS, 1f
+	GET_THREAD_INFO(a2, a1)
+	s32i	a1, a2, TI_DOUBLE_FRAME
+1:
+
 	/* Save some registers, disable loops and clear the syscall flag. */
 
 	rsr	a2, debugcause
@@ -506,6 +512,13 @@ common_exception_return:
 	wsr     a2, scompare1
 #endif
 	wsr	a3, ps		/* disable interrupts */
+
+	GET_THREAD_INFO(a2, a1)
+	l32i	a4, a2, TI_DOUBLE_FRAME
+	bne	a4, a1, 1f
+	movi	a4, 0
+	s32i	a4, a2, TI_DOUBLE_FRAME
+1:
 
 	_bbci.l	a3, PS_UM_BIT, kernel_exception_exit
 
