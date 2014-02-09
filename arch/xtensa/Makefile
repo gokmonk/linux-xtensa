@@ -20,6 +20,7 @@ variant-$(CONFIG_XTENSA_VARIANT_TEST_MMUHIFI_C3) := test_mmuhifi_c3
 variant-$(CONFIG_XTENSA_VARIANT_S6000)		:= s6000
 variant-$(CONFIG_XTENSA_VARIANT_LINUX_CUSTOM)	:= custom
 variant-$(CONFIG_XTENSA_VARIANT_TEST_KC705)	:= test_kc705
+variant-$(CONFIG_XTENSA_VARIANT_TEST_KC705_CA)	:= test_kc705_ca
 
 VARIANT = $(variant-y)
 export VARIANT
