@@ -1,0 +1,16 @@
+Bindings for Texas Instruments CDCE706 programmable 3-PLL clock
+synthesizer/multiplier/divider.
+
+Reference: http://www.ti.com/lit/ds/symlink/cdce706.pdf
+
+I2C device node required properties:
+- compatible: shall be "ti,cdce706".
+- reg: i2c device address, shall be in range [0x68...0x6b].
+- #clock-cells: from common clock binding; shall be set to 1.
+- clocks: from common clock binding; list of parent clock
+  handles, shall be reference clock(s) connected to CLK_IN0
+  and CLK_IN1 pins.
+- clock-names: shall be clk_in0 and/or clk_in1. Use clk_in0
+  in case of crystal oscillator or differential signal input
+  configuration. Use clk_in0 and clk_in1 in case of independent
+  single-ended LVCMOS inputs configuration.
