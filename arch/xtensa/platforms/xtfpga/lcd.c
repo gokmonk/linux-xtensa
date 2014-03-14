@@ -73,4 +73,4 @@ void lcd_shiftright(void)
 	udelay(50);
 }
 
-arch_initcall(lcd_init);
+//arch_initcall(lcd_init);
