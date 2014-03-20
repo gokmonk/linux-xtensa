@@ -124,6 +124,11 @@ config XTENSA_VARIANT_TEST_KC705_HIFI
 	select MMU
 	select HAVE_XTENSA_GPIO32
 
+config XTENSA_VARIANT_SHABU_MP_KC705
+	bool "shabu_mp_kc705"
+	select MMU
+	select HAVE_XTENSA_GPIO32
+
 endchoice
 
 config XTENSA_UNALIGNED_USER

@@ -22,6 +22,7 @@ variant-$(CONFIG_XTENSA_VARIANT_LINUX_CUSTOM)	:= custom
 variant-$(CONFIG_XTENSA_VARIANT_TEST_KC705)	:= test_kc705
 variant-$(CONFIG_XTENSA_VARIANT_TEST_KC705_CA)	:= test_kc705_ca
 variant-$(CONFIG_XTENSA_VARIANT_TEST_KC705_HIFI) := test_kc705_hifi
+variant-$(CONFIG_XTENSA_VARIANT_SHABU_MP_KC705)	:= shabu_mp_kc705
 
 VARIANT = $(variant-y)
 export VARIANT
