@@ -11,4 +11,12 @@
 		device_type = "memory";
 		reg = <0x00000000 0x08000000>;
 	};
+
+	soc {
+		xf: xf@0d020000 {
+			compatible = "cdns,xf_ml605";
+			reg = <0x0d020000 0x20>;
+			interrupts = <8 1>;
+		};
+	};
 };
