@@ -237,17 +237,13 @@ bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
 	const struct exception_table_entry *entry;
 
 	/* Are we prepared to handle this kernel fault?  */
-	if ((entry = search_exception_tables(in_double_exception(regs) ?
-					     regs->depc : regs->pc)) != NULL) {
+	if ((entry = search_exception_tables(regs->pc)) != NULL) {
 #ifdef DEBUG_PAGE_FAULT
 		printk(KERN_DEBUG "%s: Exception at pc=%#010lx (%lx)\n",
 				current->comm, regs->pc, entry->fixup);
 #endif
 		current->thread.bad_uaddr = address;
-		if (in_double_exception(regs))
-			regs->depc = entry->fixup;
-		else
-			regs->pc = entry->fixup;
+		regs->pc = entry->fixup;
 		return;
 	}
 
