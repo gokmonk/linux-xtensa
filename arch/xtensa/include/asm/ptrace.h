@@ -59,7 +59,10 @@ struct pt_regs {
 	(struct pt_regs *)task_thread_info(tsk)->double_frame : \
 	(struct pt_regs *)(task_stack_page(tsk) + KERNEL_STACK_SIZE - \
 			   (XCHAL_NUM_AREGS - 16) * 4) - 1)
-# define user_mode(regs) (((regs)->ps & 0x00000020)!=0)
+# define in_double_exception(regs) \
+	((regs)->depc >= VALID_DOUBLE_EXCEPTION_ADDRESS)
+# define user_mode(regs) (((regs)->ps & 0x00000020) != 0 && \
+			  !in_double_exception(regs))
 # define instruction_pointer(regs) ((regs)->pc)
 # define return_pointer(regs) (MAKE_PC_FROM_RA((regs)->areg[0], \
 					       (regs)->areg[1]))
