@@ -46,7 +46,7 @@ extern struct module __this_module;
 	extern __visible void *__crc_##sym __attribute__((weak));		\
 	static const unsigned long __kcrctab_##sym		\
 	__used							\
-	__attribute__((section("___kcrctab" sec "+" #sym), unused))	\
+	__attribute__((section("___kcrctab" sec "_" #sym), unused))	\
 	= (unsigned long) &__crc_##sym;
 #else
 #define __CRC_SYMBOL(sym, sec)
@@ -62,7 +62,7 @@ extern struct module __this_module;
 	extern const struct kernel_symbol __ksymtab_##sym;	\
 	__visible const struct kernel_symbol __ksymtab_##sym	\
 	__used							\
-	__attribute__((section("___ksymtab" sec "+" #sym), unused))	\
+	__attribute__((section("___ksymtab" sec "_" #sym), unused))	\
 	= { (unsigned long)&sym, __kstrtab_##sym }
 
 #define EXPORT_SYMBOL(sym)					\
