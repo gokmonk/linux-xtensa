@@ -4,12 +4,12 @@
 / {
 	compatible = "cdns,xtensa-shabu";
 	chosen {
-		bootargs = "earlycon=uart8250,mmio32,0xfd050020,115200n8 console=ttyS0,115200n8 ip=dhcp root=/dev/nfs rw debug memmap=0x06000000,0x1000$0x1000";
+		bootargs = "earlycon=uart8250,mmio32,0xfd050020,115200n8 console=ttyS0,115200n8 ip=dhcp root=/dev/nfs rw debug memmap=0x38000000,0x02000000$0x06000000,0x1000$0x1000";
 	};
 
 	memory@0 {
 		device_type = "memory";
-		reg = <0x00000000 0x08000000>;
+		reg = <0x00000000 0x38000000>;
 	};
 
 	soc {
